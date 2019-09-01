@@ -48,6 +48,11 @@ def select(function_code):
         destroy(int(item_index))
         return True
 
+    elif function_code == "M":
+        item_index = user_input("Index Number: ")
+        mark_completed(int(item_index))
+        return True
+
     else:
         print("Unknown Option")
         return True
@@ -84,5 +89,5 @@ def test():
 
 running = True
 while running:
-    selection = user_input("C: to add to list R: Read from list P: display list, Q: quit: ")
+    selection = user_input("C: add to list R: Read from list P: display list D: Delete an item M: Mark as Complete Q: quit: ")
     running = select(selection)
