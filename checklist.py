@@ -1,8 +1,7 @@
-checklist = list()
-checklist.append('Blue')
-checklist.append('Orange')
 
+import subprocess
 checklist = list()
+
 
 def create(item):
     checklist.append(item)
@@ -23,44 +22,62 @@ def list_all_items():
         index += 1
 
 def mark_completed(index):
-    update(index, "√ "+checklist[index])
+    update(index, "\u001b[32m √ " + checklist[index] + "\u001b[0m")
 
-def select(function_code):
-    if function_code == "C":
-        input_item = user_input("Input item: ")
-        create(input_item)
-        return True
-
-    elif function_code == "R":
-        item_index = user_input("Index Number: ")
-        print(read(int(item_index)))
-        return True
-
-    elif function_code == "P":
-        list_all_items()
-        return True
-
-    elif function_code == "Q":
-        return False
-
-    elif function_code == "D":
-        item_index = user_input("Index Number: ")
-        destroy(int(item_index))
-        return True
-
-    elif function_code == "M":
-        item_index = user_input("Index Number: ")
-        mark_completed(int(item_index))
-        return True
-
-    else:
-        print("Unknown Option")
-        return True
-    
 def user_input(prompt):
     user_input = input(prompt)
     return user_input
 
+def select(function_code):
+    try:
+
+        if function_code == "c":
+            subprocess.run("clear")
+            input_item = user_input("Input item: ")
+            create(input_item)
+            return True
+
+        elif function_code == "r":
+            subprocess.run("clear")
+            item_index = user_input("Index Number: ")
+            print(read(int(item_index)))
+            return True
+
+        elif function_code == "p":
+            subprocess.run("clear")
+            list_all_items()
+            return True
+
+        elif function_code == "q":
+            return False
+
+        elif function_code == "d":
+            subprocess.run("clear")
+            item_index = user_input("Index Number: ")
+            destroy(int(item_index))
+            return True
+
+        elif function_code == "m":
+            subprocess.run("clear")
+            item_index = user_input("Index Number: ")
+            mark_completed(int(item_index))
+            return True
+
+        elif function_code == "u":
+            subprocess.run("clear")
+            item_index = user_input("Index Number: ")
+            item_input = user_input("Item to replace with: ")
+            update(int(item_index), str(item_input))
+            return True
+
+        else:
+            print("Unknown Option")
+            return True
+
+    except IndexError:
+        print("That is not a valid index, please try again: ")
+        return True
+    
 def test():
     create("purple socks")
     create("red cloak")
@@ -89,5 +106,5 @@ def test():
 
 running = True
 while running:
-    selection = user_input("C: add to list R: Read from list P: display list D: Delete an item M: Mark as Complete Q: quit: ")
-    running = select(selection)
+    selection = user_input("C: add to list R: Read from list P: display list D: Delete an item U: Update M: Mark as Complete Q: quit: ")
+    running = select(selection.lower())
