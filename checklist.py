@@ -22,13 +22,19 @@ def list_all_items():
         index += 1
 
 def mark_completed(index):
-    update(index, "\u001b[32m √ " + checklist[index] + "\u001b[0m")
+    update(index, "\u001b[32m√ " + checklist[index] + "\u001b[0m")
+
+def unmark(index):
+    new_item = checklist[index].replace("√ ","\u001b[0m")
+    update(index, new_item)
 
 def user_input(prompt):
     user_input = input(prompt)
     return user_input
 
 def select(function_code):
+    function_code = function_code.lower()
+
     try:
 
         if function_code == "c":
@@ -70,6 +76,12 @@ def select(function_code):
             update(int(item_index), str(item_input))
             return True
 
+        elif function_code == "y":
+            subprocess.run("clear")
+            item_index = user_input("Index Number: ")
+            unmark(int(item_index))
+            return True
+
         else:
             print("Unknown Option")
             return True
@@ -106,5 +118,5 @@ def test():
 
 running = True
 while running:
-    selection = user_input("C: add to list R: Read from list P: display list D: Delete an item U: Update M: Mark as Complete Q: quit: ")
-    running = select(selection.lower())
+    selection = user_input("C: add to list \nR: Read from list \nP: display list \nD: Delete an item \nU: Update \nM: Mark as complete \nY: Unmark as complete \nQ: quit: \n")
+    running = select(selection)
